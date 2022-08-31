@@ -7,11 +7,19 @@ h1 {
     flex-wrap: wrap;
 }
 
-.quote {
+.quoteBlock {
     background-color: blanchedalmond;
     width: 200px;
     border: 1px solid black;
     border-radius: 5px;
     padding: 5px 10px;
     margin: 10px;
+}
+
+.quote {
+    font-style: italic;
+}
+
+.author {
+    font-weight: bold;
 }

@@ -30,11 +30,12 @@ const quotes = [
 ]
 
 export const addNewQuote = (newQuoteObject) => {
-    quotes.push(newQuoteObject);
+    quotes.push(newQuoteObject)
+    document.dispatchEvent(new CustomEvent("stateChanged"))
 }
 
 export const getQuotes = () => {
-    const copyOfQuotes = quotes.map(quote => ({...quote}));
+    const copyOfQuotes = quotes.map(quote => ({...quote}))
     return copyOfQuotes;
 }
 

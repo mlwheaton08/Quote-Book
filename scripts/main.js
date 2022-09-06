@@ -1,10 +1,18 @@
 import {getQuotes, addNewQuote} from './quotes.js';
 
+const getNewQuoteId = () => {
+    const quotes = getQuotes()
+    let highestQuoteId = 0
+      if(quotes.length > 0) {
+        highestQuoteId = quotes.sort((a, b) => b.id - a.id)[0].id
+      }
+      return highestQuoteId + 1
+  }
+
 // SUBMIT NEW QUOTE AND DISPLAY ALL QUOTES
 document.addEventListener('click', (e) => {
     if (e.target.id === 'submitButton') {
-        const quotes = getQuotes()
-        const newId = quotes.length + 1;
+        const newId = getNewQuoteId()
         const newQuote = document.getElementById('quoteText').value;
         const newAuthor = document.getElementById('authorText').value;
         const newQuoteObject = {
@@ -13,8 +21,11 @@ document.addEventListener('click', (e) => {
             author: newAuthor
         }
         addNewQuote(newQuoteObject)
-        displayQuotes()
     }
+})
+
+document.addEventListener('stateChanged', (e) => {
+    displayQuotes()
 })
 
 // DISPLAY ALL QUOTES

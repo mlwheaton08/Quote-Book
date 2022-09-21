@@ -1,59 +1,52 @@
-const quotes = [
-    {
-        id: 1,
-        date: "8/02/2022",
-        author: "Alexa",
-        quote: "Come eat lunch. The dogs are home and will eat you.",
-        hashTags: ["AI", "Amazon", "Skynet"]
-    },
-    {
-        id: 2,
-        date: "8/01/2022",
-        author: "Trevor",
-        quote: "Here's some practice JavaScript.",
-        hashTags: ["JavaScript", "Code Stars", "E20", "Banana"]
-    },
-    {
-        id: 3,
-        date: "7/27/2022",
-        author: "Sydney",
-        quote: "We won't hold your hands!",
-        hashTags: ["Blanched Almond", "Important things", "REMEMBER", "mister"]
-    },
-    {
-        id: 4,
-        date: "4/27/2022",
-        author: "Lynn",
-        quote: "Ask for help, even if you break the company's website.",
-        hashTags: ["Main Instructor", "Dr.", "Zen", "Chemistry", "forest"]
-    }  
-]
+import { getQuotes, addNewQuote } from './dataBase.js';
 
-export const addNewQuote = (newQuoteObject) => {
-    quotes.push(newQuoteObject)
-    document.dispatchEvent(new CustomEvent("stateChanged"))
+const getNewQuoteId = () => {
+    const quotes = getQuotes()
+    let highestQuoteId = 0
+      if(quotes.length > 0) {
+        highestQuoteId = quotes.sort((a, b) => b.id - a.id)[0].id
+      }
+      return highestQuoteId + 1
+  }
+
+// SUBMIT NEW QUOTE AND DISPLAY ALL QUOTES
+document.addEventListener('click', (e) => {
+    if (e.target.id === 'submitButton') {
+        const newId = getNewQuoteId()
+        const newQuote = document.getElementById('quoteText').value;
+        const newAuthor = document.getElementById('authorText').value;
+        const newQuoteObject = {
+            id: newId,
+            quote: newQuote,
+            author: newAuthor
+        }
+        addNewQuote(newQuoteObject)
+    }
+})
+
+export const displayQuotes = () => {
+    const quotes = getQuotes();
+    let html = "";
+    for (let i = 0; i < quotes.length; i++) {
+        html += `
+        <div class="quoteBlock">
+        <p class="quote">${quotes[i].quote}</p>
+        <p class="author">${quotes[i].author}</p>
+        </div>`;
+    }
+    return html;
 }
 
-export const getQuotes = () => {
-    const copyOfQuotes = quotes.map(quote => ({...quote}))
-    return copyOfQuotes;
+// SHOW ALL QUOTES ----------------------------
+const showQuotes = () => {
+    document.getElementById('quotes').innerHTML = displayQuotes()
 }
 
-// const authors = [
-//     {
-//         id: 1,
-//         name: "Alexa"
-//     },
-//     {
-//         id: 2,
-//         name: "Lynn"
-//     },
-//     {
-//         id: 3,
-//         name: "Trevor"
-//     },
-//     {
-//         id: 4,
-//         name: "Sydney"
-//     }
-// ]
+document.getElementById('showQuotes').addEventListener('click', showQuotes)
+
+// HIDE ALL QUOTES ------------------------------
+const hideQuotes = () => {
+    document.getElementById('quotes').innerHTML = '';
+}
+
+document.getElementById('hideQuotes').addEventListener('click', hideQuotes)
